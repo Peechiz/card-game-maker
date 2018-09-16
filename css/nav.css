@@ -1,0 +1,24 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+nav {
+  background-color: #222;
+  color: #eee;
+  padding: .5em;
+}
+
+nav li {
+  list-style-type: none;
+  display: inline;
+  margin-right: 1em;
+}
+
+nav ul {
+  margin: 0;
+}
+
+.active {
+  color: white;
+}

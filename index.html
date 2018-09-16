@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/nav.css">
+</head>
+
+<body>
+  <div id="app">
+    <nav-links page="index"></nav-links>
+
+    <main>
+      
+      <div>
+        <form>
+            <!-- add directly to deck option ? -->
+          <label for="title">Title:</label>
+          <input id="title" type="text" v-model="title">
+
+          <label for="">Image</label>
+          <input @change="imgHandle" type="file" accept=".jpg, .jpeg, .png">
+
+          <label for="">Text</label>
+          <textarea name="" id="" cols="30" rows="10" v-model="text"></textarea>
+          <button @click.prevent="submit">Submit</button>
+        </form>
+      </div>
+
+
+      <div class="preview">
+        <h3>Card Preview:</h3>
+        <div class="card">
+          <h1>{{title}}</h1>
+          <img :src="imgPreview">
+          <p>
+            {{text}}
+          </p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+  <script src="js/db.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <script src="js/nav.js"></script>
+  <script src="js/index.js"></script>
+</body>
+
+</html>
