@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>View Deck</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/deckMaker.css">
+</head>
+
+<body>
+  <div id="app">
+    <nav-links page="view"></nav-links>
+    <main>
+      <div class="row">
+        <p>Deck: </p>
+        <select class="form-control-sm" @change="select()" v-model="selectedDeck">
+          <option disabled :value="{name:'',ref:''}">Select a deck</option>
+          <option :value="deck" v-for="deck in decks">{{deck.name}}</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+
+          <!-- lists all cards -->
+          <table v-show="selectedDeck.name" class="table table-sm table-striped">
+            <thead>
+              <tr>
+                <th></th>
+                <th colspan="3">Card</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="!card.added" v-for="(card, key) in cards">
+
+                <td><img class="thumb" :src="card.img" /></td>
+                <td>{{card.title}}</td>
+                <td>
+                  <a href="#">Edit Card</a>
+                </td>
+
+                <td>
+                  <div class="input-group mb-3">
+                    <input type="number" v-model="card.num" class="form-control-sm num">
+                    <div class="input-group-append">
+                      <button @click="addToPool(card,key)" class="btn btn-outline-primary btn-sm" type="button">Add</button>
+                    </div>
+                  </div>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-6">
+          <h2>Card Pool</h2>
+          <!-- lists cards in deck -->
+          <table class="table table-sm">
+            <tbody>
+              <tr v-for="(card, key) in pool">
+
+                <td>{{card.title}}</td>
+                <td>{{card.num}}</td>
+                <td>
+                  <button class="btn btn-sm btn-success" @click="increment(card)">+</button>
+                  <button :disabled="card.num < 2" class="btn btn-sm btn-secondary" @click="decrement(card)">-</button>
+                  <button class="btn btn-sm btn-danger" @click="remove(card, key)">x</button>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+          
+        </div>
+      </div> <!-- end row-->
+    </main>
+
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+  <script src="js/db.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <script src="js/nav.js"></script>
+  <script src="js/deckMaker.js"></script>
+</body>
+
+</html>

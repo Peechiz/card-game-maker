@@ -1,0 +1,12 @@
+main {
+  padding: 1em;
+}
+
+.thumb {
+  width: 30px;
+  height: auto;
+}
+
+input.num {
+  max-width: 50px;
+}
