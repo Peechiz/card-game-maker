@@ -4,7 +4,7 @@ Vue.component('nav-links', {
   <nav>
     <ul>
       <li>
-        <a :class='page === "view" ? "active" : ""' href='view.html'>View Decks</a>
+        <a :class='page === "deck" ? "active" : ""' href='deckMaker.html'>Make Decks</a>
       </li>
       <li>
         <a :class='page === "index" ? "active" : ""' href='index.html'>Add Cards</a>
@@ -15,3 +15,5 @@ Vue.component('nav-links', {
     </ul>
   </nav>`
 })
+
+// TODO refactor to disallow links on active page?
