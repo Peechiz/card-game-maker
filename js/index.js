@@ -1,25 +1,21 @@
+let store = firebase.storage();
+
 let app = new Vue({
   el: '#app',
   data: {
-    // deckToAdd: '',
-
-    // decks: [],
 
     // new card
     title: '',
     text: '',
-    imgPreview: '',
-
-    // UI
-    // selectedDeck: {
-    //   name: null,
-    //   ref: null
-    // },
-    // addingDeck: false,
+    img: {
+      preview: '',
+      blob: null,
+      name: '',
+      path: ''
+    },
   },
   created: function () {
     decksRef.once('value').then((res) => {
-      console.log('decks:', res.val())
       let currDecks = res.val()
       this.decks = Object.keys(currDecks).map(key => {
         return {
@@ -37,24 +33,44 @@ let app = new Vue({
       // console.log(this.selectedDeck.ref)
       // console.log(this.img)
 
-      let newCard = cardsRef.push()
-      newCard.set({
-        title: this.title,
-        text: this.text,
-        img: this.imgPreview,
+      let imgStore = store.ref('/cards/' + this.img.name);
+      let upload = imgStore.put(this.img.blob);
+
+      upload.then(res => {
+        console.log(res)
+        this.img.path = res.metadata.name;
+
+        let newCard = cardsRef.push()
+        newCard.set({
+          title: this.title,
+          text: this.text,
+          img: this.img.path,
+        })
+        console.log('card added!')
+        this.clear();
+
+      }).catch(err => {
+        console.log(err);
       })
-      console.log('card added!')
-      this.clear();
+
+      
+    
     },
     imgHandle(e) {
       const input = e.target;
-      if (input.files && input.files[0]) {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-          this.imgPreview = e.target.result;
-          console.log('done')
+      let file = input.files[0]
+      if (input.files && file) {
+        let preview = new FileReader();
+        let payload = new FileReader();
+        preview.onload = e => {
+          this.img.preview = e.target.result;
         }
-        reader.readAsDataURL(input.files[0]);
+        preview.readAsDataURL(file);
+        payload.onloadend = e => {
+           this.img.blob = new Blob([e.target.result], {type: "image/jpeg"})
+           this.img.name = file.name
+        }
+        payload.readAsArrayBuffer(file);
       }
     },
     // newDeck(name) {
@@ -73,7 +89,14 @@ let app = new Vue({
     clear() {
       this.title= '';
       this.text= '';
-      this.imgPreview= '';
+
+      this.$set(this.img, 'preview', '');
+      this.img.blob='';
+      this.img.path='';
+      this.img.name='';
+
+      // TODO reset
+      this.$refs.fileUpload.value = '';
     }
   }
 })
