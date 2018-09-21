@@ -14,14 +14,33 @@
 
 <body>
   <div id="app">
-    <nav-links page="view"></nav-links>
+    <nav-links page="deck"></nav-links>
     <main>
       <div class="row">
-        <p>Deck: </p>
-        <select class="form-control-sm" @change="select()" v-model="selectedDeck">
-          <option disabled :value="{name:'',ref:''}">Select a deck</option>
-          <option :value="deck" v-for="deck in decks">{{deck.name}}</option>
-        </select>
+        <div class="col-md-6">
+          <div v-show="!addingDeck">
+            <label for="deckSelect">Deck: </label>
+            <select id="deckSelect" class="form-control-sm" @change="select()" v-model="selectedDeck">
+              <option disabled :value="{name:'',ref:''}">Select a deck</option>
+              <option :value="deck" v-for="deck in decks">{{deck.name}}</option>
+            </select>
+            <span class="newDeck" @click="toggleAddDeck">New Deck</span>
+          </div>
+          
+          <div class="form-inline" v-show="addingDeck">
+            <label class="mr-2" for="newDeckName">Deck Name: </label>
+            <div class="input-group">
+              <input v-model="newDeckName" type="text" class="form-control" placeholder="my new deck">
+              <div class="input-group-append">
+                <button @click="submitDeck" class="btn btn-primary btn-sm" type="button" id="newDeckName">Submit</button>
+              </div>
+            </div>
+            <button class="btn btn-link text-danger" @click="toggleAddDeck">Cancel</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+            <h2>Card Pool</h2>
+        </div>
       </div>
 
       <div class="row">
@@ -32,16 +51,15 @@
             <thead>
               <tr>
                 <th></th>
-                <th colspan="3">Card</th>
+                <th colspan="2">Card</th>
               </tr>
             </thead>
             <tbody>
               <tr v-if="!card.added" v-for="(card, key) in cards">
 
                 <td><img class="thumb" :src="card.img" /></td>
-                <td>{{card.title}}</td>
                 <td>
-                  <a href="#">Edit Card</a>
+                  <a href="#">{{card.title}}</a>
                 </td>
 
                 <td>
@@ -58,7 +76,6 @@
           </table>
         </div>
         <div class="col-6">
-          <h2>Card Pool</h2>
           <!-- lists cards in deck -->
           <table class="table table-sm">
             <tbody>
