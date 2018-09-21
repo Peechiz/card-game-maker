@@ -10,3 +10,13 @@ main {
 input.num {
   max-width: 50px;
 }
+
+.newDeck {
+  color: blue;
+  margin-left: .5em; 
+}
+
+.newDeck:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
